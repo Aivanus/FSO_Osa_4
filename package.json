@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "watch": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Aivanus/FSO_Osa_4#readme",
   "devDependencies": {
+    "jest": "^23.4.2",
     "nodemon": "^1.18.3"
   },
   "dependencies": {
@@ -27,5 +28,8 @@
     "express": "^4.16.3",
     "mongoose": "^5.2.7",
     "morgan": "^1.9.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
