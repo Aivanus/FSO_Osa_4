@@ -15,8 +15,8 @@ describe('when GET is sent to api/blogs', () => {
 
   test('all blog items are returned', async () => {
     const response = await api.get('/api/blogs')
-    
-    expect(response.body.lenght).toBe(initialBlogs.lenght)
+
+    expect(response.body.length).toBe(initialBlogs.length)
   })
 
   test('a specific blog item is within the returned', async () => {
@@ -25,7 +25,28 @@ describe('when GET is sent to api/blogs', () => {
     const titles = response.body.map(r => r.title)
     expect(titles).toContainEqual('Go To Statement Considered Harmful')
   })
+})
 
+describe('when POST is sent to api/blogs', () => {
+  test('valid blog item is added', async () => {
+    const validBlog = {
+      "title": "First Blog",
+      "author": "Anonymous",
+      "url": "www.uuu.com",
+      "likes": 9000
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(validBlog)
+      .expect(201)
+
+    const response = await api.get('/api/blogs')
+
+    const titles = response.body.map(r => r.title)
+    expect(response.body.length).toBe(initialBlogs.length + 1)
+    expect(titles).toContainEqual('First Blog')
+  })
 })
 
 beforeAll(async () => {
