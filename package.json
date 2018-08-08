@@ -1,0 +1,31 @@
+{
+  "name": "fso_osa_4",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aivanus/FSO_Osa_4.git"
+  },
+  "author": "Ivan Kropotov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Aivanus/FSO_Osa_4/issues"
+  },
+  "homepage": "https://github.com/Aivanus/FSO_Osa_4#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.3"
+  },
+  "dependencies": {
+    "cors": "^2.8.4",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "mongoose": "^5.2.7",
+    "morgan": "^1.9.0"
+  }
+}
