@@ -16,12 +16,5 @@ blogSchema.statics.format = function (blog) {
   }
 }
 
-// const Blog = mongoose.model('Blog', {
-//   title: String,
-//   author: String,
-//   url: String,
-//   likes: Number
-// })
-
 const Blog = mongoose.model('Blog', blogSchema)
 module.exports = Blog
