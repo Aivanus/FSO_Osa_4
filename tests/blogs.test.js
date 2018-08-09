@@ -47,6 +47,59 @@ describe('when POST is sent to api/blogs', () => {
     expect(response.body.length).toBe(initialBlogs.length + 1)
     expect(titles).toContainEqual('First Blog')
   })
+
+  test('and likes arent provided it has zero likes', async () => {
+    const noLikesBlog = {
+      "title": "First Blog",
+      "author": "Anonymous",
+      "url": "www.uuu.com"
+    }
+    
+    const addedBlog = await api
+      .post('/api/blogs')
+      .send(noLikesBlog)
+      .expect(201)
+
+    expect(addedBlog.body.likes).toBe(0)
+  })
+
+  test('item without title is not added', async () => {
+    const noLikesBlog = {
+      "author": "Anonymous",
+      "url": "www.uuu.com",
+      "likes": 0
+    }
+
+    const blogsBeforePosting = await api.get('/api/blogs').expect(200)
+    
+    await api
+      .post('/api/blogs')
+      .send(noLikesBlog)
+      .expect(400)
+
+    const blogsAfterPosting = await api.get('/api/blogs').expect(200)
+
+    expect(blogsBeforePosting.body.length).toBe(blogsAfterPosting.body.length)
+  })
+
+  test('item without url is not added', async () => {
+    const noLikesBlog = {
+      "title": "First Blog",
+      "author": "Anonymous",
+      "likes": 0
+    }
+
+    const blogsBeforePosting = await api.get('/api/blogs').expect(200)
+    
+    await api
+      .post('/api/blogs')
+      .send(noLikesBlog)
+      .expect(400)
+
+    const blogsAfterPosting = await api.get('/api/blogs').expect(200)
+
+    expect(blogsBeforePosting.body.length).toBe(blogsAfterPosting.body.length)
+  })
 })
 
 beforeAll(async () => {

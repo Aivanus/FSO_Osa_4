@@ -12,9 +12,20 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  const blog = new Blog(request.body)
-  const savedBlog = await blog.save()
-  response.status(201).json(savedBlog)
+  try {
+    const blog = new Blog(request.body)
+    if (blog.title === undefined || blog.url === undefined) {
+      return response.status(400).send({ error: 'title and url are required' })
+    }
+    if (blog.likes === undefined) {
+      blog.likes = 0
+    }
+    const savedBlog = await blog.save()
+    response.status(201).json(savedBlog)
+  }catch(exeption){
+    console.log(exeption)
+    rspnonse.status(500).send({error: 'something went wrong during posting'})
+  }
 })
 
 module.exports = blogsRouter
