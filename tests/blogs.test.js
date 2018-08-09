@@ -20,7 +20,6 @@ describe('when GET is sent to api/blogs', () => {
 
   test('all blog items are returned', async () => {
     const response = await helper.blogsInDb()
-    //dependency
     expect(response.length).toBe(initialBlogs.length)
   })
 

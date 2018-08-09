@@ -13,7 +13,7 @@ const listWithOneBlog = [
 
 const blogs = require('./test_blogs')
 
-describe.skip('list helpers', () => {
+describe('list helpers', () => {
   // tests of function dummy
   test('dummy is called', () => {
     const blogs = []
