@@ -11,6 +11,9 @@ class App extends React.Component {
       username: '',
       password: '',
       user: null,
+      title: '',
+      author: '',
+      url: '',
       error: null
     }
   }
@@ -24,6 +27,7 @@ class App extends React.Component {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       this.setState({ user })
+      blogService.setToken(user.token)
     }
   }
 
@@ -36,6 +40,29 @@ class App extends React.Component {
     this.setState({ user: null })
   }
 
+  handleTextFieldChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
+
+  createBlogEntry = async (event) => {
+    event.preventDefault()
+    try {
+      const createdBlogEntry = await blogService.create({
+        title: this.state.title,
+        author: this.state.author,
+        url: this.state.url
+      })
+      this.setState({
+        title: '',
+        author: '',
+        url: '',
+        blogs: this.state.blogs.concat(createdBlogEntry)
+      })
+    } catch (exeption) {
+      console.log(exeption)
+    }
+  }
+
   login = async (event) => {
     event.preventDefault()
     try {
@@ -45,6 +72,7 @@ class App extends React.Component {
       })
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
+      blogService.setToken(user.token)
       this.setState({ username: '', password: '', user })
     } catch (exeption) {
       this.setState({
@@ -87,14 +115,52 @@ class App extends React.Component {
 
     const loggedInView = () => (
       <div>
-        <h2>blogs</h2>
+        <h2>Blogs</h2>
         <div>
           {this.state.user.name} is logged in
           <button onClick={this.handleLogoutPress}>logout</button>
         </div>
+        {blogForm()}
         {this.state.blogs.map(blog =>
           <Blog key={blog._id} blog={blog} />
         )}
+      </div>
+    )
+
+    const blogForm = () => (
+      <div>
+        <h2>Create new</h2>
+
+        <form onSubmit={this.createBlogEntry}>
+          <div>
+            title
+          <input
+              type="text"
+              name="title"
+              value={this.state.title}
+              onChange={this.handleTextFieldChange}
+            />
+          </div>
+          <div>
+            author
+          <input
+              type="text"
+              name="author"
+              value={this.state.author}
+              onChange={this.handleTextFieldChange}
+            />
+          </div>
+          <div>
+            url
+          <input
+              type="text"
+              name="url"
+              value={this.state.url}
+              onChange={this.handleTextFieldChange}
+            />
+          </div>
+          <button type="submit">create</button>
+        </form>
       </div>
     )
 
