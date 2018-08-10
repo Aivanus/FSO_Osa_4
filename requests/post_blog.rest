@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkNob3Nlbk9uZSIsImlkIjoiNWI2ZDQ5NTJkYzQ3N2ExYWFjM2MwZTliIiwiaWF0IjoxNTMzODkwNTk4fQ.GQYzBTfAc_ayaW6LUlOccEW-r84-oz5JNWixcQY5K6s
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkNob3Nlbk9uZSIsImlkIjoiNWI2ZDYyNGE1OGUwNWIyYzQ4ODg1ODI5IiwiaWF0IjoxNTMzODk1MjgyfQ.GBcjI2qWqlpLNORWQQv0jSBh2aVORyIuIBP8ZN_bGUo
 
 {
   "title": "First Blog",
@@ -12,7 +12,19 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkNob
 ###
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplZGkiLCJpZCI6IjViNmQ0OTViZGM0NzdhMWFhYzNjMGU5YyIsImlhdCI6MTUzMzg5MDg4OH0.ENJfaNzPitObe9ci1GnATxKGRNJMcKe_ggyNHPmb53s
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplZGkiLCJpZCI6IjViNmQ2MjRkNThlMDViMmM0ODg4NTgyYSIsImlhdCI6MTUzMzg5OTUyMX0.DgsFE-yrUlkuJBvOJnXtQQg0Vgr3xuCW4tb4jHkxd8M
+
+{
+  "title": "Another Blog",
+  "author": "Anonymous",
+  "url": "www.uuu.com",
+  "likes": 1
+}
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplZGkiLCJpZCI6IjViNmQ2MjRkNThlMDViMmM0ODg4NTgyYSIsImlhdCI6MTUzMzg5NTMxNH0.RoWBNzcgGXojQMF_g1gPvUEoRS58jQnrtGapM9xawNA
 
 {
   "title": "Second Blog",
