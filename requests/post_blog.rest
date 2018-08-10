@@ -7,3 +7,14 @@ Content-Type: application/json
   "url": "www.uuu.com",
   "likes": 9000
 }
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Second Blog",
+  "author": "Adds",
+  "url": "www.u3u.com",
+  "likes": 98
+}
