@@ -1,5 +1,6 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkNob3Nlbk9uZSIsImlkIjoiNWI2ZDQ5NTJkYzQ3N2ExYWFjM2MwZTliIiwiaWF0IjoxNTMzODkwNTk4fQ.GQYzBTfAc_ayaW6LUlOccEW-r84-oz5JNWixcQY5K6s
 
 {
   "title": "First Blog",
@@ -11,6 +12,7 @@ Content-Type: application/json
 ###
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplZGkiLCJpZCI6IjViNmQ0OTViZGM0NzdhMWFhYzNjMGU5YyIsImlhdCI6MTUzMzg5MDg4OH0.ENJfaNzPitObe9ci1GnATxKGRNJMcKe_ggyNHPmb53s
 
 {
   "title": "Second Blog",
