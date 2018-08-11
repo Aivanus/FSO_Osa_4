@@ -75,10 +75,10 @@ class Blog extends React.Component {
 
     return (
       <div style={blogStyle}>
-        <div style={hideWhenFullInfo} >
+        <div style={hideWhenFullInfo} className="stubInfo">
           <h4 onClick={this.toggleView}>{this.props.blog.title} {this.props.blog.author}</h4>
         </div>
-        <div style={showWhenFullInfo}>
+        <div style={showWhenFullInfo} className="fullInfo">
           <h4 onClick={this.toggleView}>{this.props.blog.title} {this.props.blog.author}</h4>
           <a href={this.props.blog.url}>{this.props.blog.url}</a>
           <p>
