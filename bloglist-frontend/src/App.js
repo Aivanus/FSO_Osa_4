@@ -80,8 +80,12 @@ class App extends React.Component {
     }
   }
 
-  updateBlogs = () => {
+  updateLikes = (id) => {
     this.setState({ blogs: this.state.blogs })
+  }
+
+  deleteBlog = (id) => {
+    this.setState({ blogs: this.state.blogs.filter(b => b._id !== id) })
   }
 
   login = async (event) => {
@@ -120,7 +124,14 @@ class App extends React.Component {
           />
         </Togglable>
         {this.state.blogs.sort((a, b) => a.likes < b.likes).map(blog =>
-          <Blog key={blog._id} blog={blog} updateBlogs={this.updateBlogs} />
+          <Blog
+            key={blog._id}
+            blog={blog}
+            username={this.state.user.username}
+            updateLikes={this.updateLikes}
+            deleteBlog={this.deleteBlog}
+            setNotification={this.setNotification}
+          />
         )}
       </div>
     )
