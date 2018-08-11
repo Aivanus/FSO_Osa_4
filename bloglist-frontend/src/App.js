@@ -1,5 +1,6 @@
 import React from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -14,7 +15,8 @@ class App extends React.Component {
       title: '',
       author: '',
       url: '',
-      error: null
+      message: '',
+      status: null
     }
   }
 
@@ -38,16 +40,27 @@ class App extends React.Component {
   handleLogoutPress = (event) => {
     window.localStorage.removeItem('loggedUser')
     this.setState({ user: null })
+    this.setNotification(`Logged out`,'success')
   }
 
   handleTextFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
+  setNotification = (message, status) => {
+    this.setState({
+      message: message,
+      status: status
+    })
+    setTimeout(() => {
+      this.setState({ message: '', status: null })
+    }, 5000)
+  }
+
   createBlogEntry = async (event) => {
     event.preventDefault()
     try {
-      const createdBlogEntry = await blogService.create({
+      const createdBlog = await blogService.create({
         title: this.state.title,
         author: this.state.author,
         url: this.state.url
@@ -56,10 +69,12 @@ class App extends React.Component {
         title: '',
         author: '',
         url: '',
-        blogs: this.state.blogs.concat(createdBlogEntry)
+        blogs: this.state.blogs.concat(createdBlog)
       })
+      this.setNotification(`A new blog ${createdBlog.title} by ${createdBlog.author} created`,'success')
     } catch (exeption) {
       console.log(exeption)
+      this.setNotification('Blog entry not created','error')
     }
   }
 
@@ -74,13 +89,9 @@ class App extends React.Component {
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       blogService.setToken(user.token)
       this.setState({ username: '', password: '', user })
+      this.setNotification('Logged in','success')
     } catch (exeption) {
-      this.setState({
-        error: 'Invalid usernamve or password'
-      })
-      setTimeout(() => {
-        this.setState({ error: null })
-      }, 5000)
+      this.setNotification('Invalid username or password','error')
     }
   }
 
@@ -167,6 +178,7 @@ class App extends React.Component {
     return (
 
       <div>
+        <Notification message={this.state.message} status={this.state.status} />
         {this.state.user === null ?
           loginForm() :
           loggedInView()
