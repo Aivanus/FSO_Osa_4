@@ -58,6 +58,10 @@ class App extends React.Component {
     }, 5000)
   }
 
+  // updateBlogs = () => {
+  //   this.setState
+  // }
+
   createBlogEntry = async (event) => {
     event.preventDefault()
     this.loggedInView.toggleVisibility()

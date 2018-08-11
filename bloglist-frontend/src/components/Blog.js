@@ -1,4 +1,5 @@
 import React from 'react'
+import blogService from '../services/blogs'
 
 class Blog extends React.Component {
   constructor(props) {
@@ -10,6 +11,24 @@ class Blog extends React.Component {
 
   toggleView = () => {
     this.setState({ fullInfo: !this.state.fullInfo })
+  }
+
+  handleLike = async (event) => {
+    event.preventDefault()
+    try {
+      const likedBlog = await blogService.update(this.props.blog._id,{
+        user: this.props.blog.user._id,
+        author: this.props.blog.author,
+        title: this.props.blog.title,
+        url: this.props.blog.url,
+        likes: this.props.blog.likes + 1
+      })
+
+      this.props.blog.likes = likedBlog.likes
+      this.setState({})
+    } catch (exeption) {
+      console.log(exeption)
+    }
   }
 
   render() {
@@ -34,7 +53,7 @@ class Blog extends React.Component {
           <a href={this.props.blog.url}>{this.props.blog.url}</a>
           <p>
             {this.props.blog.likes} likes
-            <button>like</button>
+            <button onClick={this.handleLike}>like</button>
           </p>
           <p>Added by {this.props.blog.user.name}</p>
         </div>
@@ -42,10 +61,5 @@ class Blog extends React.Component {
     )
   }
 }
-// const Blog = ({ blog }) => (
-//   <div>
-//     {blog.title} {blog.author}
-//   </div>
-// )
 
 export default Blog
