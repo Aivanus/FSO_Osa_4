@@ -1,6 +1,11 @@
 import React from 'react'
+
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
+
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -33,14 +38,10 @@ class App extends React.Component {
     }
   }
 
-  handleLoginFieldChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
-  }
-
   handleLogoutPress = (event) => {
     window.localStorage.removeItem('loggedUser')
     this.setState({ user: null })
-    this.setNotification(`Logged out`,'success')
+    this.setNotification(`Logged out`, 'success')
   }
 
   handleTextFieldChange = (event) => {
@@ -71,10 +72,10 @@ class App extends React.Component {
         url: '',
         blogs: this.state.blogs.concat(createdBlog)
       })
-      this.setNotification(`A new blog ${createdBlog.title} by ${createdBlog.author} created`,'success')
+      this.setNotification(`A new blog ${createdBlog.title} by ${createdBlog.author} created`, 'success')
     } catch (exeption) {
       console.log(exeption)
-      this.setNotification('Blog entry not created','error')
+      this.setNotification('Blog entry not created', 'error')
     }
   }
 
@@ -89,40 +90,13 @@ class App extends React.Component {
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       blogService.setToken(user.token)
       this.setState({ username: '', password: '', user })
-      this.setNotification('Logged in','success')
+      this.setNotification('Logged in', 'success')
     } catch (exeption) {
-      this.setNotification('Invalid username or password','error')
+      this.setNotification('Invalid username or password', 'error')
     }
   }
 
   render() {
-    const loginForm = () => (
-      <div>
-        <h2>Log in to application</h2>
-
-        <form onSubmit={this.login}>
-          <div>
-            username
-            <input
-              type="text"
-              name="username"
-              value={this.state.username}
-              onChange={this.handleLoginFieldChange}
-            />
-          </div>
-          <div>
-            password
-            <input
-              type="password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleLoginFieldChange}
-            />
-          </div>
-          <button type="submit">login</button>
-        </form>
-      </div>
-    )
 
     const loggedInView = () => (
       <div>
@@ -131,47 +105,18 @@ class App extends React.Component {
           {this.state.user.name} is logged in
           <button onClick={this.handleLogoutPress}>logout</button>
         </div>
-        {blogForm()}
+        <Togglable buttonLabel={'add blog'}>
+          <BlogForm
+            handleSubmit={this.createBlogEntry}
+            handleChange={this.handleTextFieldChange}
+            title={this.state.title}
+            author={this.state.author}
+            url={this.state.url}
+          />
+        </Togglable>
         {this.state.blogs.map(blog =>
           <Blog key={blog._id} blog={blog} />
         )}
-      </div>
-    )
-
-    const blogForm = () => (
-      <div>
-        <h2>Create new</h2>
-
-        <form onSubmit={this.createBlogEntry}>
-          <div>
-            title
-          <input
-              type="text"
-              name="title"
-              value={this.state.title}
-              onChange={this.handleTextFieldChange}
-            />
-          </div>
-          <div>
-            author
-          <input
-              type="text"
-              name="author"
-              value={this.state.author}
-              onChange={this.handleTextFieldChange}
-            />
-          </div>
-          <div>
-            url
-          <input
-              type="text"
-              name="url"
-              value={this.state.url}
-              onChange={this.handleTextFieldChange}
-            />
-          </div>
-          <button type="submit">create</button>
-        </form>
       </div>
     )
 
@@ -180,7 +125,12 @@ class App extends React.Component {
       <div>
         <Notification message={this.state.message} status={this.state.status} />
         {this.state.user === null ?
-          loginForm() :
+          (<LoginForm
+            username={this.state.username}
+            password={this.state.password}
+            handleChange={this.handleTextFieldChange}
+            handleSubmit={this.login}
+          />) :
           loggedInView()
         }
       </div>
