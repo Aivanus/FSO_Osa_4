@@ -25,7 +25,8 @@ class Blog extends React.Component {
       })
 
       this.props.blog.likes = likedBlog.likes
-      this.setState({})
+      // this.setState({})
+      this.props.updateBlogs()
     } catch (exeption) {
       console.log(exeption)
     }

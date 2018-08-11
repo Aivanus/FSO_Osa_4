@@ -58,10 +58,6 @@ class App extends React.Component {
     }, 5000)
   }
 
-  // updateBlogs = () => {
-  //   this.setState
-  // }
-
   createBlogEntry = async (event) => {
     event.preventDefault()
     this.loggedInView.toggleVisibility()
@@ -82,6 +78,10 @@ class App extends React.Component {
       console.log(exeption)
       this.setNotification('Blog entry not created', 'error')
     }
+  }
+
+  updateBlogs = () => {
+    this.setState({ blogs: this.state.blogs })
   }
 
   login = async (event) => {
@@ -119,8 +119,8 @@ class App extends React.Component {
             url={this.state.url}
           />
         </Togglable>
-        {this.state.blogs.map(blog =>
-          <Blog key={blog._id} blog={blog} />
+        {this.state.blogs.sort((a, b) => a.likes < b.likes).map(blog =>
+          <Blog key={blog._id} blog={blog} updateBlogs={this.updateBlogs} />
         )}
       </div>
     )
