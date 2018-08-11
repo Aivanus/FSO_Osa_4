@@ -60,6 +60,7 @@ class App extends React.Component {
 
   createBlogEntry = async (event) => {
     event.preventDefault()
+    this.loggedInView.toggleVisibility()
     try {
       const createdBlog = await blogService.create({
         title: this.state.title,
@@ -105,7 +106,7 @@ class App extends React.Component {
           {this.state.user.name} is logged in
           <button onClick={this.handleLogoutPress}>logout</button>
         </div>
-        <Togglable buttonLabel={'add blog'}>
+        <Togglable buttonLabel={'add blog'} ref={component => this.loggedInView = component}>
           <BlogForm
             handleSubmit={this.createBlogEntry}
             handleChange={this.handleTextFieldChange}
