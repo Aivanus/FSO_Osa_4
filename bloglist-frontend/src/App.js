@@ -107,34 +107,36 @@ class App extends React.Component {
 
   render() {
 
-    const loggedInView = () => (
-      <div>
-        <h2>Blogs</h2>
+    const loggedInView = () => {
+      return (
         <div>
-          {this.state.user.name} is logged in
+          <h2>Blogs</h2>
+          <div>
+            {this.state.user.name} is logged in
           <button onClick={this.handleLogoutPress}>logout</button>
+          </div>
+          <Togglable buttonLabel={'add blog'} ref={component => this.loggedInView = component}>
+            <BlogForm
+              handleSubmit={this.createBlogEntry}
+              handleChange={this.handleTextFieldChange}
+              title={this.state.title}
+              author={this.state.author}
+              url={this.state.url}
+            />
+          </Togglable>
+          {this.state.blogs.sort((a, b) => a.likes < b.likes).map(blog =>
+            <Blog
+              key={blog._id}
+              blog={blog}
+              username={this.state.user.username}
+              updateLikes={this.updateLikes}
+              deleteBlog={this.deleteBlog}
+              setNotification={this.setNotification}
+            />
+          )}
         </div>
-        <Togglable buttonLabel={'add blog'} ref={component => this.loggedInView = component}>
-          <BlogForm
-            handleSubmit={this.createBlogEntry}
-            handleChange={this.handleTextFieldChange}
-            title={this.state.title}
-            author={this.state.author}
-            url={this.state.url}
-          />
-        </Togglable>
-        {this.state.blogs.sort((a, b) => a.likes < b.likes).map(blog =>
-          <Blog
-            key={blog._id}
-            blog={blog}
-            username={this.state.user.username}
-            updateLikes={this.updateLikes}
-            deleteBlog={this.deleteBlog}
-            setNotification={this.setNotification}
-          />
-        )}
-      </div>
-    )
+      )
+    }
 
     return (
 
