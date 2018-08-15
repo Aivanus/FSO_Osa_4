@@ -19,7 +19,8 @@ class Blog extends React.Component {
       this.props.blog.user = { name: 'Anonymous' }
     }
     this.state = {
-      fullInfo: false
+      fullInfo: false,
+      blog: this.props.blog
     }
   }
 
@@ -54,6 +55,7 @@ class Blog extends React.Component {
       })
 
       this.props.blog.likes = likedBlog.likes
+      this.setState({blog: likedBlog})
       this.props.updateLikes(this.props.blog._id, this.props.blog)
     } catch (exeption) {
       console.log(exeption)

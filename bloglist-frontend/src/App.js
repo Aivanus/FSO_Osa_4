@@ -44,16 +44,16 @@ class App extends React.Component {
   handleLogoutPress = (event) => {
     window.localStorage.removeItem('loggedUser')
     this.setState({ user: null })
-    this.setNotification(`Logged out`, 'success')
+    this.props.notify(`Logged out`, 'success')
   }
 
   handleTextFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  setNotification = (message, status) => {
-    this.props.notify(message, status)
-  }
+  // setNotification = (message, status) => {
+  //   this.props.notify(message, status)
+  // }
 
   createBlogEntry = async (event) => {
     event.preventDefault()
@@ -129,7 +129,7 @@ class App extends React.Component {
               username={this.state.user.username}
               updateLikes={this.updateLikes}
               deleteBlog={this.deleteBlog}
-              setNotification={this.setNotification}
+              // setNotification={this.setNotification}
             />
           )}
         </div>
