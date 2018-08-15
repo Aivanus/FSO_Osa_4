@@ -1,16 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
+import { blogUpdate, blogRemove } from '../reducers/blogReducer'
 import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
 class Blog extends React.Component {
   static propTypes = {
-    blog: PropTypes.object.isRequired,
-    // username: PropTypes.string.isRequired,
-    updateLikes: PropTypes.func.isRequired,
-    deleteBlog: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired
+    blog: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -19,8 +16,7 @@ class Blog extends React.Component {
       this.props.blog.user = { name: 'Anonymous' }
     }
     this.state = {
-      fullInfo: false,
-      blog: this.props.blog
+      fullInfo: false
     }
   }
 
@@ -32,8 +28,7 @@ class Blog extends React.Component {
     event.preventDefault()
     if (window.confirm(`Do you want to delete ${this.props.blog.title}?`)) {
       try {
-        await blogService.remove(this.props.blog._id)
-        this.props.deleteBlog(this.props.blog._id)
+         this.props.blogRemove(this.props.blog._id)
         this.props.notify(`Blog ${this.props.blog.title} is deleted!`, 'success')
       } catch (exeption) {
         console.log(exeption)
@@ -46,7 +41,7 @@ class Blog extends React.Component {
   handleLike = async (event) => {
     event.preventDefault()
     try {
-      const likedBlog = await blogService.update(this.props.blog._id, {
+      this.props.blogUpdate(this.props.blog._id, {
         user: this.props.blog.user._id,
         author: this.props.blog.author,
         title: this.props.blog.title,
@@ -54,17 +49,12 @@ class Blog extends React.Component {
         likes: this.props.blog.likes + 1
       })
 
-      this.props.blog.likes = likedBlog.likes
-      this.setState({ blog: likedBlog })
-      this.props.updateLikes(this.props.blog._id, this.props.blog)
     } catch (exeption) {
       console.log(exeption)
     }
   }
 
   render() {
-    // console.log(this.props.blog)
-    // console.log('here')
     const blogStyle = {
       paddingTop: 10,
       paddingLeft: 2,
@@ -108,5 +98,4 @@ const mapStateToProps = (state, ownProps) => {
   }
 }
 
-export default connect(mapStateToProps, { notify })(Blog)
-// export default Blog
+export default connect(mapStateToProps, { notify, blogUpdate, blogRemove })(Blog)

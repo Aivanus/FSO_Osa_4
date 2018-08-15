@@ -9,6 +9,7 @@ import Togglable from './components/Togglable'
 
 import { notify } from './reducers/notificationReducer'
 import { setUser, clearUser } from './reducers/userReducer'
+import { blogInit, blogCreate, blogRemove } from './reducers/blogReducer'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -17,36 +18,27 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      blogs: [],
       username: '',
       password: '',
-      // user: null,
       title: '',
       author: '',
-      url: '',
-      // message: '',
-      // status: null
+      url: ''
     }
   }
 
   componentDidMount() {
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs })
-    )
+    this.props.blogInit()
 
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       this.props.setUser(user)
       blogService.setToken(user.token)
-      // this.setState({ user })
-      // blogService.setToken(user.token)
     }
   }
 
   handleLogoutPress = (event) => {
     window.localStorage.removeItem('loggedUser')
-    // this.setState({ user: null })
     this.props.clearUser()
     this.props.notify(`Logged out`, 'success')
   }
@@ -55,44 +47,34 @@ class App extends React.Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  // setNotification = (message, status) => {
-  //   this.props.notify(message, status)
-  // }
-
   createBlogEntry = async (event) => {
     event.preventDefault()
     this.loggedInView.toggleVisibility()
     try {
-      const createdBlog = await blogService.create({
+      const blogToCreate = {
         title: this.state.title,
         author: this.state.author,
-        url: this.state.url
-      })
+        url: this.state.url,
+        user: this.props.user
+      }
+      this.props.blogCreate(blogToCreate)
+
       this.setState({
         title: '',
         author: '',
-        url: '',
-        blogs: this.state.blogs.concat(createdBlog)
+        url: ''
       })
-      this.props.notify(`A new blog ${createdBlog.title} by ${createdBlog.author} created`, 'success')
+      this.props.notify(`A new blog ${blogToCreate.title} by ${blogToCreate.author} created`, 'success')
     } catch (exeption) {
       console.log(exeption)
       this.props.notify('Blog entry not created', 'error')
     }
   }
 
-  updateLikes = (id) => {
-    console.log('update')
-    this.setState({ blogs: this.state.blogs })
-  }
-
-  deleteBlog = (id) => {
-    this.setState({ blogs: this.state.blogs.filter(b => b._id !== id) })
-  }
-
   login = async (event) => {
     event.preventDefault()
     try {
+      this.props.blogInit()
       const user = await loginService.login({
         username: this.state.username,
         password: this.state.password
@@ -102,7 +84,6 @@ class App extends React.Component {
       blogService.setToken(user.token)
       this.setState({ username: '', password: '' })
       this.props.setUser(user)
-      // this.setState({ username: '', password: '', user })
       this.props.notify('Logged in', 'success')
     } catch (exeption) {
       this.props.notify('Invalid username or password', 'error')
@@ -110,7 +91,6 @@ class App extends React.Component {
   }
 
   render() {
-
     const loggedInView = () => {
       return (
         <div>
@@ -128,14 +108,10 @@ class App extends React.Component {
               url={this.state.url}
             />
           </Togglable>
-          {this.state.blogs.sort((a, b) => a.likes < b.likes).map(blog =>
+          {this.props.blogs.map(blog =>
             <Blog
               key={blog._id}
               blog={blog}
-              // username={this.props.user.username}
-              updateLikes={this.updateLikes}
-              deleteBlog={this.deleteBlog}
-            // setNotification={this.setNotification}
             />
           )}
         </div>
@@ -160,13 +136,12 @@ class App extends React.Component {
   }
 }
 
-// export default App;
-
 const mapStateToProps = (state, ownProps) => {
   return {
     user: state.user,
+    blogs: state.blogs.sort((a, b) => a.likes < b.likes),
     props: ownProps
   }
 }
 
-export default connect(mapStateToProps, { notify, setUser, clearUser })(App)
+export default connect(mapStateToProps, { notify, setUser, clearUser, blogInit, blogCreate, blogRemove })(App)

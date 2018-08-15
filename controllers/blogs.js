@@ -55,11 +55,13 @@ blogsRouter.delete('/:id', async (request, response) => {
   try {
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
     const blogToDelete = await Blog.findById(request.params.id)
+    console.log(blogToDelete)
+    console.log(request.params.id)
 
-    
 
-    if(blogToDelete.user && decodedToken.id.toString() !== blogToDelete.user.toString()){
-      return response.status(403).send({error: 'only user that created the entry can delete blog'})
+
+    if (blogToDelete.user && decodedToken.id.toString() !== blogToDelete.user.toString()) {
+      return response.status(403).send({ error: 'only user that created the entry can delete blog' })
     }
 
     const user = await User.findById(decodedToken.id)
