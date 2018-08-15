@@ -1,10 +1,13 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+
+import { notify } from './reducers/notificationReducer'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -20,8 +23,8 @@ class App extends React.Component {
       title: '',
       author: '',
       url: '',
-      message: '',
-      status: null
+      // message: '',
+      // status: null
     }
   }
 
@@ -49,13 +52,7 @@ class App extends React.Component {
   }
 
   setNotification = (message, status) => {
-    this.setState({
-      message: message,
-      status: status
-    })
-    setTimeout(() => {
-      this.setState({ message: '', status: null })
-    }, 5000)
+    this.props.notify(message, status)
   }
 
   createBlogEntry = async (event) => {
@@ -73,14 +70,15 @@ class App extends React.Component {
         url: '',
         blogs: this.state.blogs.concat(createdBlog)
       })
-      this.setNotification(`A new blog ${createdBlog.title} by ${createdBlog.author} created`, 'success')
+      this.props.notify(`A new blog ${createdBlog.title} by ${createdBlog.author} created`, 'success')
     } catch (exeption) {
       console.log(exeption)
-      this.setNotification('Blog entry not created', 'error')
+      this.props.notify('Blog entry not created', 'error')
     }
   }
 
   updateLikes = (id) => {
+    console.log('update')
     this.setState({ blogs: this.state.blogs })
   }
 
@@ -99,9 +97,9 @@ class App extends React.Component {
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       blogService.setToken(user.token)
       this.setState({ username: '', password: '', user })
-      this.setNotification('Logged in', 'success')
+      this.props.notify('Logged in', 'success')
     } catch (exeption) {
-      this.setNotification('Invalid username or password', 'error')
+      this.props.notify('Invalid username or password', 'error')
     }
   }
 
@@ -141,7 +139,7 @@ class App extends React.Component {
     return (
 
       <div>
-        <Notification message={this.state.message} status={this.state.status} />
+        <Notification />
         {this.state.user === null ?
           (<LoginForm
             username={this.state.username}
@@ -156,4 +154,13 @@ class App extends React.Component {
   }
 }
 
-export default App;
+// export default App;
+
+// const mapStateToProps = (state) => {
+//   return {
+//     message: state.notification.message,
+//     status: state.notification.status
+//   }
+// }
+
+export default connect(null, { notify })(App)

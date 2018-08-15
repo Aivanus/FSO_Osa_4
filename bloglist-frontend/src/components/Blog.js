@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { notify } from '../reducers/notificationReducer'
 import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
@@ -8,7 +10,7 @@ class Blog extends React.Component {
     username: PropTypes.string.isRequired,
     updateLikes: PropTypes.func.isRequired,
     deleteBlog: PropTypes.func.isRequired,
-    setNotification: PropTypes.func.isRequired
+    notify: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -31,11 +33,11 @@ class Blog extends React.Component {
       try {
         await blogService.remove(this.props.blog._id)
         this.props.deleteBlog(this.props.blog._id)
-        this.props.setNotification(`Blog ${this.props.blog.title} is deleted!`, 'success')
+        this.props.notify(`Blog ${this.props.blog.title} is deleted!`, 'success')
       } catch (exeption) {
         console.log(exeption)
         console.log('not deleted')
-        this.props.setNotification(`Cannot delete this blog`, 'error')
+        this.props.notify(`Cannot delete this blog`, 'error')
       }
     }
   }
@@ -59,6 +61,8 @@ class Blog extends React.Component {
   }
 
   render() {
+    console.log(this.props.blog)
+    console.log('here')
     const blogStyle = {
       paddingTop: 10,
       paddingLeft: 2,
@@ -95,4 +99,12 @@ class Blog extends React.Component {
   }
 }
 
-export default Blog
+const mapStateToProps = (state, ownProps) => {
+  console.log(ownProps)
+  return {
+    props: ownProps
+  }
+}
+
+export default connect(mapStateToProps, { notify })(Blog)
+// export default Blog
