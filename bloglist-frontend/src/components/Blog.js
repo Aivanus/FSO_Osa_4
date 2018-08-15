@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 class Blog extends React.Component {
   static propTypes = {
     blog: PropTypes.object.isRequired,
-    username: PropTypes.string.isRequired,
+    // username: PropTypes.string.isRequired,
     updateLikes: PropTypes.func.isRequired,
     deleteBlog: PropTypes.func.isRequired,
     notify: PropTypes.func.isRequired
@@ -55,7 +55,7 @@ class Blog extends React.Component {
       })
 
       this.props.blog.likes = likedBlog.likes
-      this.setState({blog: likedBlog})
+      this.setState({ blog: likedBlog })
       this.props.updateLikes(this.props.blog._id, this.props.blog)
     } catch (exeption) {
       console.log(exeption)
@@ -63,8 +63,8 @@ class Blog extends React.Component {
   }
 
   render() {
-    console.log(this.props.blog)
-    console.log('here')
+    // console.log(this.props.blog)
+    // console.log('here')
     const blogStyle = {
       paddingTop: 10,
       paddingLeft: 2,
@@ -76,7 +76,7 @@ class Blog extends React.Component {
     const hideWhenFullInfo = { display: this.state.fullInfo ? 'none' : '' }
     const showWhenFullInfo = { display: this.state.fullInfo ? '' : 'none' }
     const authorizedToDelete = {
-      display: (this.props.blog.user.username === undefined || this.props.blog.user.username.toString() === this.props.username.toString()) ? '' : 'none'
+      display: (this.props.blog.user.username === undefined || this.props.blog.user.username.toString() === this.props.currentUsername.toString()) ? '' : 'none'
     }
 
     return (
@@ -102,8 +102,8 @@ class Blog extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps)
   return {
+    currentUsername: state.user.username,
     props: ownProps
   }
 }

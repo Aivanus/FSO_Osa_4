@@ -8,6 +8,7 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 
 import { notify } from './reducers/notificationReducer'
+import { setUser, clearUser } from './reducers/userReducer'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -19,7 +20,7 @@ class App extends React.Component {
       blogs: [],
       username: '',
       password: '',
-      user: null,
+      // user: null,
       title: '',
       author: '',
       url: '',
@@ -36,14 +37,17 @@ class App extends React.Component {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      this.setState({ user })
+      this.props.setUser(user)
       blogService.setToken(user.token)
+      // this.setState({ user })
+      // blogService.setToken(user.token)
     }
   }
 
   handleLogoutPress = (event) => {
     window.localStorage.removeItem('loggedUser')
-    this.setState({ user: null })
+    // this.setState({ user: null })
+    this.props.clearUser()
     this.props.notify(`Logged out`, 'success')
   }
 
@@ -96,7 +100,9 @@ class App extends React.Component {
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       blogService.setToken(user.token)
-      this.setState({ username: '', password: '', user })
+      this.setState({ username: '', password: '' })
+      this.props.setUser(user)
+      // this.setState({ username: '', password: '', user })
       this.props.notify('Logged in', 'success')
     } catch (exeption) {
       this.props.notify('Invalid username or password', 'error')
@@ -110,7 +116,7 @@ class App extends React.Component {
         <div>
           <h2>Blogs</h2>
           <div>
-            {this.state.user.name} is logged in
+            {this.props.user.name} is logged in
           <button onClick={this.handleLogoutPress}>logout</button>
           </div>
           <Togglable buttonLabel={'add blog'} ref={component => this.loggedInView = component}>
@@ -126,10 +132,10 @@ class App extends React.Component {
             <Blog
               key={blog._id}
               blog={blog}
-              username={this.state.user.username}
+              // username={this.props.user.username}
               updateLikes={this.updateLikes}
               deleteBlog={this.deleteBlog}
-              // setNotification={this.setNotification}
+            // setNotification={this.setNotification}
             />
           )}
         </div>
@@ -140,7 +146,7 @@ class App extends React.Component {
 
       <div>
         <Notification />
-        {this.state.user === null ?
+        {this.props.user === null ?
           (<LoginForm
             username={this.state.username}
             password={this.state.password}
@@ -156,11 +162,11 @@ class App extends React.Component {
 
 // export default App;
 
-// const mapStateToProps = (state) => {
-//   return {
-//     message: state.notification.message,
-//     status: state.notification.status
-//   }
-// }
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.user,
+    props: ownProps
+  }
+}
 
-export default connect(null, { notify })(App)
+export default connect(mapStateToProps, { notify, setUser, clearUser })(App)
