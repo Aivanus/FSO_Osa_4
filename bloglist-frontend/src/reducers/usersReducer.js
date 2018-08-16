@@ -12,7 +12,6 @@ const reducer = (state = [], action) => {
 export const initUsers = () => {
   return async (dispatch) => {
     const users = await usersService.getAll()
-    console.log(users)
     dispatch({
       type: 'INITUSERS',
       data: users

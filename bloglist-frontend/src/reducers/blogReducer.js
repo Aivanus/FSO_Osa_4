@@ -1,11 +1,12 @@
 import blogService from '../services/blogs'
+import userService from '../services/users'
 
 const reducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT':
       return action.data
     case 'CREATEBLOG':
-      return [...state, action.newBlog]
+      return [...state, { ...action.newBlog, user: action.user }]
     case 'REMOVEBLOG':
       return state.filter(b => b._id !== action.id)
     case 'UPDATEBLOG': {
@@ -21,9 +22,11 @@ const reducer = (state = [], action) => {
 export const blogCreate = (blog) => {
   return async (dispatch) => {
     const newBlog = await blogService.create(blog)
+    const user = await userService.getById(newBlog.user)
     dispatch({
       type: 'CREATEBLOG',
-      newBlog: newBlog
+      newBlog: newBlog,
+      user: user
     })
   }
 }

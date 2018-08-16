@@ -2,7 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
-import Blog from './components/Blog'
+// import Blog from './components/Blog'
+import BlogList from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
@@ -30,6 +31,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    console.log('App mount')
     this.props.initUsers()
     this.props.blogInit()
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
@@ -112,12 +114,12 @@ class App extends React.Component {
               url={this.state.url}
             />
           </Togglable>
-          {this.props.blogs.map(blog =>
+          {/* {this.props.blogs.map(blog =>
             <Blog
               key={blog._id}
               blog={blog}
             />
-          )}
+          )} */}
         </div>
       )
     }
@@ -127,9 +129,11 @@ class App extends React.Component {
       <div>
         <Notification />
         <Router>
-          {/* Need to update with redux */}
-          <Route path="/users" component={UserList} />
-          {/* <Route exact path="/users" component={UserList} render={() => <UserList />} /> */}
+          <div>
+            {/* Need to update with redux */}
+            <Route path="/users" component={UserList} />
+            <Route path="/blogs" component={BlogList} />
+          </div>
         </Router>
         {this.props.loggedUser === null ?
           (<LoginForm
@@ -146,9 +150,11 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  // console.log('App')
+  // console.log(state)
   return {
     loggedUser: state.loggedUser,
-    blogs: state.blogs.sort((a, b) => a.likes < b.likes),
+    // blogs: state.blogs.sort((a, b) => a.likes < b.likes),
     users: state.users,
     props: ownProps
   }
