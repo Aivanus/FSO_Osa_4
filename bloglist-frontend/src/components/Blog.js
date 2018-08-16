@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { notify } from '../reducers/notificationReducer'
 import { blogUpdate, blogRemove } from '../reducers/blogReducer'
-import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
 class Blog extends React.Component {
@@ -93,7 +92,7 @@ class Blog extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    currentUsername: state.user.username,
+    currentUsername: state.loggedUser.username,
     props: ownProps
   }
 }
