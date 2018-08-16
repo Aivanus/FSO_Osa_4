@@ -127,7 +127,9 @@ class App extends React.Component {
       <div>
         <Notification />
         <Router>
-          <Route exact path="/users" render={() => <UserList />} />
+          {/* Need to update with redux */}
+          <Route path="/users" component={UserList} />
+          {/* <Route exact path="/users" component={UserList} render={() => <UserList />} /> */}
         </Router>
         {this.props.loggedUser === null ?
           (<LoginForm
