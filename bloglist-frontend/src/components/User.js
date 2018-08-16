@@ -27,8 +27,6 @@ const UserInfo = (props) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log('usres')
-  console.log(state)
   return {
     users: state.users,
     props: ownProps

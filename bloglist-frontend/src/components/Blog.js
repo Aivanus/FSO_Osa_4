@@ -8,8 +8,6 @@ import { blogUpdate, blogRemove } from '../reducers/blogReducer'
 import BlogInfo from '../components/BlogInfo'
 
 class BlogList extends React.Component {
-
-
   constructor(props) {
     super(props)
   }

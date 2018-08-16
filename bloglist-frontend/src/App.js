@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
+import { Container, Menu as SemMenu } from 'semantic-ui-react'
 
 // import Blog from './components/Blog'
 import BlogList from './components/Blog'
@@ -17,6 +18,17 @@ import { initUsers } from './reducers/usersReducer'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
+
+const Menu = () => (
+  <SemMenu inverted>
+    <SemMenu.Item link>
+      <NavLink exact to="/blogs">blogs</NavLink>&nbsp;
+    </SemMenu.Item>
+    <SemMenu.Item link>
+      <NavLink exact to="/users">users</NavLink>&nbsp;
+    </SemMenu.Item>
+  </SemMenu>
+)
 
 class App extends React.Component {
   constructor(props) {
@@ -100,7 +112,6 @@ class App extends React.Component {
     const loggedInView = () => {
       return (
         <div>
-          <h2>Blogs</h2>
           <div>
             {this.props.loggedUser.name} is logged in
           <button onClick={this.handleLogoutPress}>logout</button>
@@ -114,37 +125,33 @@ class App extends React.Component {
               url={this.state.url}
             />
           </Togglable>
-          {/* {this.props.blogs.map(blog =>
-            <Blog
-              key={blog._id}
-              blog={blog}
-            />
-          )} */}
         </div>
       )
     }
 
     return (
-
-      <div>
-        <Notification />
-        <Router>
-          <div>
-            {/* Need to update with redux */}
-            <Route path="/users" component={UserList} />
-            <Route path="/blogs" component={BlogList} />
-          </div>
-        </Router>
-        {this.props.loggedUser === null ?
-          (<LoginForm
-            username={this.state.username}
-            password={this.state.password}
-            handleChange={this.handleTextFieldChange}
-            handleSubmit={this.login}
-          />) :
-          loggedInView()
-        }
-      </div>
+      <Container>
+        <div>
+          <Router>
+            <div>
+              <Menu />
+              <Notification />
+              {this.props.loggedUser === null ?
+                (<LoginForm
+                  username={this.state.username}
+                  password={this.state.password}
+                  handleChange={this.handleTextFieldChange}
+                  handleSubmit={this.login}
+                />) :
+                loggedInView()
+              }
+              {/* Need to update with redux */}
+              <Route path="/users" component={UserList} />
+              <Route path="/blogs" component={BlogList} />
+            </div>
+          </Router>
+        </div>
+      </Container>
     )
   }
 }
