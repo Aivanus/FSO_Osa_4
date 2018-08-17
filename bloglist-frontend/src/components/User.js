@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Link } from 'react-router-dom'
 import { initUsers } from '../reducers/usersReducer'
+import { Header, Table, TableBody, TableCell, TableRow, List } from 'semantic-ui-react'
 
 const findUserById = (users, id) => {
   return users.find(u => u._id.toString() === id)
@@ -12,15 +13,15 @@ const UserInfo = (props) => {
 
   return (user ?
     <div>
-      <h2>{user.name}</h2>
-      <h3>Added blogs</h3>
-      <ul>
+      <Header as="h2">{user.name}</Header>
+      <Header as="h3">Added blogs</Header>
+      <List bulleted>
         {user.blogs.map(b =>
-          <li key={b._id}>
+          <List.Item key={b._id}>
             {`${b.title} by ${b.author}`}
-          </li>
+          </List.Item>
         )}
-      </ul>
+      </List>
     </div>
     : null
   )
@@ -45,21 +46,23 @@ const UserList = (props) => {
       />
       <div>
         <h3>Blog afficionados</h3>
-        <table>
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th>Blogs</th>
-            </tr>
+        <Table>
+          <Table.Header>
+            <TableRow>
+              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Table.HeaderCell>Blogs</Table.HeaderCell>
+            </TableRow>
+          </Table.Header>
+          <TableBody>
             {props.users.map(u =>
-              (<tr key={u._id}>
-                <td><Link key={u._id} to={`${props.match.url}/${u._id}`}>{u.name}</Link></td>
-                <td>{u.blogs.length}</td>
-              </tr>)
+              (<TableRow key={u._id}>
+                <TableCell><Link key={u._id} to={`${props.match.url}/${u._id}`}>{u.name}</Link></TableCell>
+                <TableCell>{u.blogs.length}</TableCell>
+              </TableRow>)
             )
             }
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   )

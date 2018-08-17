@@ -2,10 +2,8 @@
 const reducer = (state = null, action) => {
   switch (action.type) {
     case 'SETUSER':
-      console.log('setuser')
       return action.user
     case 'CLEARUSER':
-      console.log('clear')
       return null
     default:
       return state

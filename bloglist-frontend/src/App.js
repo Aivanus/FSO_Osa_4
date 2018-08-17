@@ -1,9 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route, Link, NavLink } from 'react-router-dom'
-import { Container, Menu as SemMenu } from 'semantic-ui-react'
+import { BrowserRouter as Router, Route, NavLink } from 'react-router-dom'
+import { Container, Menu as SemMenu, Button, Header } from 'semantic-ui-react'
 
-// import Blog from './components/Blog'
 import BlogList from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
@@ -77,6 +76,7 @@ class App extends React.Component {
       }
       this.props.blogCreate(blogToCreate)
 
+      this.props.initUsers()
       this.setState({
         title: '',
         author: '',
@@ -113,9 +113,10 @@ class App extends React.Component {
       return (
         <div>
           <div>
-            {this.props.loggedUser.name} is logged in
-          <button onClick={this.handleLogoutPress}>logout</button>
+            <p>{this.props.loggedUser.name} is logged in</p>
+            <Button basic color= "red" onClick={this.handleLogoutPress}>logout</Button>
           </div>
+          <Header as="h1">Blogs</Header>
           <Togglable buttonLabel={'add blog'} ref={component => this.loggedInView = component}>
             <BlogForm
               handleSubmit={this.createBlogEntry}
@@ -145,7 +146,6 @@ class App extends React.Component {
                 />) :
                 loggedInView()
               }
-              {/* Need to update with redux */}
               <Route path="/users" component={UserList} />
               <Route path="/blogs" component={BlogList} />
             </div>
@@ -157,11 +157,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  // console.log('App')
-  // console.log(state)
   return {
     loggedUser: state.loggedUser,
-    // blogs: state.blogs.sort((a, b) => a.likes < b.likes),
     users: state.users,
     props: ownProps
   }

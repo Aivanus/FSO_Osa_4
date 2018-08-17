@@ -8,8 +8,6 @@ const getAll = () => {
 
 const getById = async (id) => {
   const request = axios.get(`${baseUrl}/${id}`)
-  console.log('requestr')
-  console.log(request)
   return request.then(response => response.data)
 }
 

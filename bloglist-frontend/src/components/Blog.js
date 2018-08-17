@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Route, Link } from 'react-router-dom'
+import { List } from 'semantic-ui-react'
+
 
 import { notify } from '../reducers/notificationReducer'
 import { blogUpdate, blogRemove } from '../reducers/blogReducer'
@@ -8,36 +10,25 @@ import { blogUpdate, blogRemove } from '../reducers/blogReducer'
 import BlogInfo from '../components/BlogInfo'
 
 class BlogList extends React.Component {
-  constructor(props) {
-    super(props)
-  }
 
   render() {
-    const blogStyle = {
-      paddingTop: 10,
-      paddingLeft: 2,
-      border: 'solid',
-      borderWidth: 1,
-      marginBottom: 5
-    }
 
     return (
       <div>
-        <h1>Blogs</h1>
         <Route
           path={`${this.props.match.path}/:id`}
           render={({ match }) => <BlogInfo id={match.params.id} />}
         />
         <div>
-          <div className="stubInfo">
+          <List divided relaxed className="stubInfo">
             {this.props.blogs.map(b =>
-              <div key={b._id} style={blogStyle}>
+              <List.Item key={b._id} >
                 <Link key={b._id} to={`${this.props.match.url}/${b._id}`}>
                   {b.title} {b.author}
                 </Link>
-              </div>
+              </List.Item>
             )}
-          </div>
+          </List>
         </div>
       </div>
     )

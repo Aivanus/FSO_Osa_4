@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Form, Button, FormField, Header, List, ListItem } from 'semantic-ui-react'
 import { blogUpdate, blogRemove, blogComment } from '../reducers/blogReducer'
 import { notify } from '../reducers/notificationReducer'
 
@@ -14,48 +15,50 @@ const BlogInfo = (props) => {
   }
   return (
     <div>
-      <h2>{`${blog.title} by ${blog.author}`}</h2>
+      <Header as="h2">{`${blog.title} by ${blog.author}`}</Header>
       <a href={blog.url}>{blog.url}</a>
       <p>
         {blog.likes} likes
-        <button onClick={() => {
+        <Button color="green" onClick={() => {
           props.blogUpdate(blog._id, { ...blog, likes: blog.likes + 1 })
         }
-        }>like</button>
+        }>like</Button>
       </p>
       <p>Added by {blog.user.name}</p>
       {
         props.currentUsername === blog.user.username ?
-          <button onClick={() => {
+          <Button color="red" onClick={() => {
             if (window.confirm(`Do you want to delete ${blog.title}?`)) {
               props.blogRemove(blog._id)
               props.notify(`Blog ${blog.title} is deleted!`, 'success')
             }
-          }}>delete</button>
+          }}>delete</Button>
           : null
       }
       <div>
-        <h3>Comments</h3>
-        <ul>
+        <Header as="h3">Comments</Header>
+        <List bulleted relaxed>
           {blog.comments.length === 0 ?
             <p> No comments yet </p> :
             blog.comments.map((c, index) =>
-              <li key={index}>
+              <ListItem key={index}>
                 {c}
-              </li>
+              </ListItem>
             )}
-        </ul>
+        </List>
         <div>
-          <form onSubmit={(event) => {
+          <Form onSubmit={(event) => {
             event.preventDefault()
             const newComment = event.target.comment.value
             props.blogComment(blog._id, blog, newComment)
             props.notify(`Blog '${blog.title}' commented with '${newComment}'!`, 'success')
             event.target.comment.value = ''
           }}>
-            <input name="comment" />
-            <button type="submit">lisää</button>
-          </form>
+            <FormField>
+              <input name="comment" />
+            </FormField>
+            <Button primary type="submit">add comment</Button>
+          </Form>
         </div>
       </div>
     </div >

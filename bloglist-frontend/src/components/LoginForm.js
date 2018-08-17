@@ -1,32 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Form, Button, FormField, Header } from 'semantic-ui-react'
 
 const LoginForm = ({ handleSubmit, handleChange, username, password }) => {
   return (
     <div>
-      <h2>Log in to application</h2>
+      <Header as="h2">Log in to application</Header>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          username
-        <input
+      <Form onSubmit={handleSubmit}>
+        <FormField>
+          <label>username</label>
+          <input
             type="text"
             name="username"
             value={username}
             onChange={handleChange}
           />
-        </div>
-        <div>
-          password
-        <input
+        </FormField>
+        <FormField>
+          <label>password</label>
+          <input
             type="password"
             name="password"
             value={password}
             onChange={handleChange}
           />
-        </div>
-        <button type="submit">login</button>
-      </form>
+        </FormField>
+        <Button primary type="submit">login</Button>
+      </Form>
     </div>
   )
 }
