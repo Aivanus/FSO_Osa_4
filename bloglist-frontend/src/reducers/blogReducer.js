@@ -9,10 +9,15 @@ const reducer = (state = [], action) => {
       return [...state, { ...action.newBlog, user: action.user }]
     case 'REMOVEBLOG':
       return state.filter(b => b._id !== action.id)
-    case 'UPDATEBLOG': {
+    case 'LIKEBLOG': {
       const old = state.filter(b => b._id !== action.id)
       const liked = state.find(b => b._id === action.id)
       return [...old, { ...liked, likes: liked.likes + 1 }]
+    }
+    case 'COMMENTBLOG': {
+      const old = state.filter(b => b._id !== action.id)
+      const commented = state.find(b => b._id === action.id)
+      return [...old, {...commented, comments: commented.comments.concat(action.newComment)}]
     }
     default:
       return state
@@ -33,9 +38,9 @@ export const blogCreate = (blog) => {
 
 export const blogUpdate = (id, blog) => {
   return async (dispatch) => {
-    await blogService.update(id, blog)
+    blogService.update(id, blog)
     dispatch({
-      type: 'UPDATEBLOG',
+      type: 'LIKEBLOG',
       id: id
     })
   }
@@ -47,6 +52,17 @@ export const blogRemove = (id) => {
     dispatch({
       type: 'REMOVEBLOG',
       id: id
+    })
+  }
+}
+
+export const blogComment = (id, blog, newComment) => {
+  return async (dispatch) => {
+    await blogService.comment(id, {...blog, comments: blog.comments.concat(newComment)})
+    dispatch({
+      type: 'COMMENTBLOG',
+      id: id,
+      newComment: newComment
     })
   }
 }

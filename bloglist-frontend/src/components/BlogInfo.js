@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { blogUpdate, blogRemove } from '../reducers/blogReducer'
+import { blogUpdate, blogRemove, blogComment } from '../reducers/blogReducer'
 import { notify } from '../reducers/notificationReducer'
 
 const findBlogById = (blogs, id) => {
@@ -37,16 +37,26 @@ const BlogInfo = (props) => {
       <div>
         <h3>Comments</h3>
         <ul>
-        {blog.comments.length === 0 ? 
-        <p> No comments yet </p> :
-         blog.comments.map((c,index) =>
-          <li key={index}>
-            {c}
-          </li>
-        )}
-      </ul>
-      <input/>
-      <button>Add commment</button>
+          {blog.comments.length === 0 ?
+            <p> No comments yet </p> :
+            blog.comments.map((c, index) =>
+              <li key={index}>
+                {c}
+              </li>
+            )}
+        </ul>
+        <div>
+          <form onSubmit={(event) => {
+            event.preventDefault()
+            const newComment = event.target.comment.value
+            props.blogComment(blog._id, blog, newComment)
+            props.notify(`Blog '${blog.title}' commented with '${newComment}'!`, 'success')
+            event.target.comment.value = ''
+          }}>
+            <input name="comment" />
+            <button type="submit">lisää</button>
+          </form>
+        </div>
       </div>
     </div >
   )
@@ -59,4 +69,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { blogUpdate, blogRemove, notify })(BlogInfo)
+export default connect(mapStateToProps, { blogUpdate, blogRemove, blogComment, notify })(BlogInfo)
