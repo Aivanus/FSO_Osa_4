@@ -9,8 +9,6 @@ const findBlogById = (blogs, id) => {
 
 const BlogInfo = (props) => {
   const blog = findBlogById(props.blogs, props.id)
-  // console.log('blog')
-  // console.log(blog)
   if (!blog) {
     return null
   }
@@ -36,6 +34,20 @@ const BlogInfo = (props) => {
           }}>delete</button>
           : null
       }
+      <div>
+        <h3>Comments</h3>
+        <ul>
+        {blog.comments.length === 0 ? 
+        <p> No comments yet </p> :
+         blog.comments.map((c,index) =>
+          <li key={index}>
+            {c}
+          </li>
+        )}
+      </ul>
+      <input/>
+      <button>Add commment</button>
+      </div>
     </div >
   )
 }

@@ -1,0 +1,12 @@
+PUT http://localhost:3003/api/blogs/5b7680be0309674984dee6e1/comments
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkplZGkiLCJpZCI6IjViNmQ2MjRkNThlMDViMmM0ODg4NTgyYSIsImlhdCI6MTUzMzg5NTMxNH0.RoWBNzcgGXojQMF_g1gPvUEoRS58jQnrtGapM9xawNA
+
+{
+  "title": "Commented blog",
+  "author": "Someone",
+  "url": "www.u3u.com",
+  "likes": 77,
+  "comments": ["This is another comment", "Yes is it", "...?",
+   "This comment was added through backend", "this also"]
+}
