@@ -35,7 +35,7 @@ class BlogList extends React.Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
   return {
     currentUsername: state.loggedUser ? state.loggedUser.username : null,
     blogs: state.blogs.sort((a, b) => b.likes - a.likes)

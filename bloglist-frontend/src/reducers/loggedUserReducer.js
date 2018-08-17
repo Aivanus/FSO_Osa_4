@@ -20,7 +20,7 @@ export const setUser = (user) => {
   }
 }
 
-export const clearUser = (user) => {
+export const clearUser = () => {
   console.log('userCleared')
   return async (dispatch) => {
     dispatch({

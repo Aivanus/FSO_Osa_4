@@ -54,10 +54,10 @@ class App extends React.Component {
     }
   }
 
-  handleLogoutPress = (event) => {
+  handleLogoutPress = () => {
     window.localStorage.removeItem('loggedUser')
     this.props.clearUser()
-    this.props.notify(`Logged out`, 'success')
+    this.props.notify('Logged out', 'success')
   }
 
   handleTextFieldChange = (event) => {
@@ -114,7 +114,7 @@ class App extends React.Component {
         <div>
           <div>
             <p>{this.props.loggedUser.name} is logged in</p>
-            <Button basic color= "red" onClick={this.handleLogoutPress}>logout</Button>
+            <Button basic color="red" onClick={this.handleLogoutPress}>logout</Button>
           </div>
           <Header as="h1">Blogs</Header>
           <Togglable buttonLabel={'add blog'} ref={component => this.loggedInView = component}>

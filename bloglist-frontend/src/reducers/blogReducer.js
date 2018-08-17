@@ -17,7 +17,7 @@ const reducer = (state = [], action) => {
     case 'COMMENTBLOG': {
       const old = state.filter(b => b._id !== action.id)
       const commented = state.find(b => b._id === action.id)
-      return [...old, {...commented, comments: commented.comments.concat(action.newComment)}]
+      return [...old, { ...commented, comments: commented.comments.concat(action.newComment) }]
     }
     default:
       return state
@@ -58,7 +58,7 @@ export const blogRemove = (id) => {
 
 export const blogComment = (id, blog, newComment) => {
   return async (dispatch) => {
-    await blogService.comment(id, {...blog, comments: blog.comments.concat(newComment)})
+    await blogService.comment(id, { ...blog, comments: blog.comments.concat(newComment) })
     dispatch({
       type: 'COMMENTBLOG',
       id: id,
